@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: whoami-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/soulaymahableni/tp19-gitops.git
+    targetRevision: main
+    path: envs/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: whoami-dev
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
