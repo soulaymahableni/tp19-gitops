@@ -1,3 +1,5 @@
+# Partie 2 : une Application = "déployer envs/dev du dépôt dans le namespace whoami-dev".
+# Pas de synchronisation automatique au départ : on synchronise à la main (argocd app sync).
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -15,3 +17,7 @@ spec:
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
+    # Partie 3 : décommenter, commiter, puis kubectl apply -f argocd/application-dev.yaml
+    # automated:
+    #   prune: true
+    #   selfHeal: true

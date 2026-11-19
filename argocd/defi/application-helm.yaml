@@ -1,0 +1,27 @@
+# Défi : déployer le chart Helm du TP15 avec Argo CD (source de type Helm).
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: whoami-helm
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/soulaymahableni/tp15-helm-kustomize.git
+    targetRevision: main
+    path: chart-starter/whoami
+    helm:
+      valueFiles:
+        - ../../values-dev.yaml          # fichier du dépôt, hors du dossier du chart
+      parameters:
+        - name: ingress.enabled          # pas d'Ingress : évite le conflit avec whoami.lab.local
+          value: "false"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: whoami-helm
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
